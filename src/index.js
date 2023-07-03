@@ -86,9 +86,15 @@ async function onLoadMore() {
   try {
     const data = await ImagesApi.fetchArticles();
 
+    const elementsLength = document
+      .getElementById('galleryBox')
+      .getElementsByTagName('a').length;
+
+    console.log(elementsLength);
+
     createMarkup(data.hits);
 
-    if (data.hits.length < 40) {
+    if (data.hits.length < 40 || elementsLength === 480) {
       disableBtn();
       return Notiflix.Notify.info(
         "We're sorry, but you've reached the end of search results."
@@ -98,7 +104,6 @@ async function onLoadMore() {
     console.log(error);
   }
 }
-
 function clearMarkup() {
   galleryContainer.innerHTML = '';
 }
