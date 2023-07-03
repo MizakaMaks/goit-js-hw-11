@@ -23,13 +23,16 @@ function onSearch(e) {
 
   disableBtn();
 
-  ImagesApi.inputValue = formInput.value;
+  ImagesApi.inputValue = formInput.value.trim();
   if (ImagesApi.inputValue === '') {
     return Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again'
     );
   }
-
+  // ImagesApi.resetPage();
+  // clearMarkup();
+  // ImagesApi.fetchArticles().then(createMarkup);
+  // unDisableBtn();
   createGallery();
 }
 
@@ -40,10 +43,18 @@ async function createGallery() {
 
     const data = await ImagesApi.fetchArticles();
 
+    console.log(data);
+
     if (data.totalHits === 0) {
       return Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again'
       );
+    }
+
+    if (data.totalHits < 40) {
+      disableBtn();
+    } else {
+      unDisableBtn();
     }
 
     createMarkup(data.hits);
@@ -51,8 +62,7 @@ async function createGallery() {
 
     Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
 
-
-    unDisableBtn();
+    // ImagesApi.fetchArticles().then(createMarkup);
   } catch (error) {
     console.log(error);
   }
@@ -70,7 +80,7 @@ function createMarkup(data) {
 }
 
 async function onLoadMore() {
-
+  // ImagesApi.fetchArticles().then(createMarkup);
 
   try {
     const data = await ImagesApi.fetchArticles();
