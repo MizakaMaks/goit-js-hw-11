@@ -53,6 +53,7 @@ async function createGallery() {
 
     if (data.totalHits < 40) {
       disableBtn();
+      Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
     } else {
       unDisableBtn();
     }
